@@ -51,6 +51,11 @@ RUN NUKE_PATH="$(find /opt/exodus/bundles -name "Nuke" | head -1)" \
     LIB_PATH="${NUKE_PATH}/../usr/lib/x86_64-linux-gnu" \
     sh -c 'for path in $(find "${LIB_PATH}" -name "*.so*"); do ln -fs "${path}" "${NUKE_PATH}"; done'
 
+RUN addgroup -S app && \
+    adduser -S -G app app
+RUN chown app:app /opt
+USER app
+
 ENV PATH="/opt/exodus/bin:${PATH}"
 
 ENTRYPOINT ["/opt/exodus/bin/nuke"]
